@@ -4,6 +4,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.chrome.options import Options
 
 class SIS_Scraper:
     driver = None # webdriver
@@ -15,7 +16,10 @@ class SIS_Scraper:
         os.environ['PATH'] += r"/Users/jdanninger/Documents/GitHub/Awesome-SIS-Tool/SeleniumScraper/chromedriver"
         self.term = term
         self.searchMe = searchTerm
-        self.driver = webdriver.Chrome()
+        options = webdriver.ChromeOptions()
+        dump = "/Users/jdanninger/Documents/GitHub/Awesome-SIS-Tool/SeleniumScraper/Excel Dump"
+        options.add_experimental_option( "prefs", { "download.default_directory": dump })
+        self.driver = webdriver.Chrome(options=options)
 
 
     def __str__(self):
@@ -38,22 +42,24 @@ class SIS_Scraper:
         return search
 
     def search(self):
-        # if self.search == None :
         search = self.setupSearch()
         search.send_keys(self.searchMe)
         search.send_keys(Keys.RETURN)
-        self.getListObj()
+        self.downloadExcel()
 
 
-    def getListObj(self):
+    def downloadExcel(self):
         WebDriverWait(self.driver, 20).until(
-
+            EC.invisibility_of_element(
+                (By.ID, "processing")
+            )
         )
-        test = self.driver.find_element(By.ID, "win3divDESCR100$grid$0")
-        test.find_element(By.TAG_NAME, "Strong")
-        print(test)
+        self.driver.find_element(By.ID, "CW_CLSRCH_WRK2_TC_EXCEL_BTN").click()
         while True:
             pass
+
+
+
 
 
 
