@@ -1,4 +1,6 @@
 import os
+import time
+
 from selenium.webdriver.common.keys import Keys
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -29,14 +31,15 @@ class SIS_Scraper:
         self.driver.get("https://sisguest.case.edu/")
         self.driver.implicitly_wait(10)
         class_search = self.driver.find_element(By.ID, "win0groupletPTNUI_LAND_REC_GROUPLET$0")
+        self.waitUntilProcesingDone()
         class_search.click()
         self.driver.implicitly_wait(10)
         fall_23 = self.driver.find_element(By.XPATH, "//*[text()='" + self.term + "']")
-        self.driver.implicitly_wait(10)
+        self.waitUntilProcesingDone()
         fall_23.click()
         self.driver.implicitly_wait(10)
         search = self.driver.find_element(By.XPATH, "//input[@placeholder='Search']")
-        self.driver.implicitly_wait(10)
+        self.waitUntilProcesingDone()
         search.click()
         self.driver.implicitly_wait(10)
         return search
@@ -47,21 +50,20 @@ class SIS_Scraper:
         search.send_keys(Keys.RETURN)
         self.downloadExcel()
 
+    def waitUntilProcesingDone(self):
+        WebDriverWait(self.driver, 60).until(
+            EC.invisibility_of_element(
+                (By.ID, "processing")
+            )
+        )
 
     def downloadExcel(self):
+        self.waitUntilProcesingDone()
+        self.driver.find_element(By.ID, "CW_CLSRCH_WRK2_TC_EXCEL_BTN").click()
         WebDriverWait(self.driver, 20).until(
             EC.invisibility_of_element(
                 (By.ID, "processing")
             )
         )
-        self.driver.find_element(By.ID, "CW_CLSRCH_WRK2_TC_EXCEL_BTN").click()
-        while True:
-            pass
-
-
-
-
-
-
-
+        time.sleep(2)
 
