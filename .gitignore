@@ -1,4 +1,3 @@
 .idea
-SeleniumScraper/__pycache__
-SeleniumScraper/Excel Dump
-SeleniumScraper/production
+backend/__pycache__
+.venv
