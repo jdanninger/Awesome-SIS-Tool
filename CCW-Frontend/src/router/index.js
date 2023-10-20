@@ -16,6 +16,39 @@ const routes = [
       },
     ],
   },
+  {
+    path: '/login',
+    component: () => import('@/layouts/default/Default.vue'),
+    children: [
+      {
+        path: '',
+        name: 'Login',
+        component: () => import(/* webpackChunkName: "home" */ '@/views/Login.vue'),
+      },
+    ],
+  },
+  {
+    path: '/register',
+    component: () => import('@/layouts/default/Default.vue'),
+    children: [
+      {
+        path: '',
+        name: 'Register',
+        component: () => import(/* webpackChunkName: "home" */ '@/views/Registration.vue'),
+      },
+    ],
+  },
+  {
+    path: '/tracking',
+    component: () => import('@/layouts/default/Default.vue'),
+    children: [
+      {
+        path: '',
+        name: 'Tracking',
+        component: () => import(/* webpackChunkName: "home" */ '@/views/Tracking.vue'),
+      },
+    ],
+  },
 ]
 
 const router = createRouter({
