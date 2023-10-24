@@ -1,5 +1,11 @@
-describe('Home page test', () => {
-  it('Home page elements exist', () => {
+describe('Home page test', () => 
+{
+  it('Home page exists', () => {
+    cy.visit('http://localhost:3000/')
+  })
+
+  it('Home page elements exist', () => 
+  {
     cy.visit('http://localhost:3000/')
 
     //title exists
@@ -19,9 +25,33 @@ describe('Home page test', () => {
 
     //login is present
     cy.get('[href="/login"]')
-
+   
   })
 
+ 
 })
+
+describe('Login page test', () => {
+  it('Login page elements exist', () => 
+  {
+    cy.visit('http://localhost:3000/login')
+  })
+})
+
+describe('Register page test', () => {
+  it('Register page elements exist', () => {
+    cy.visit('http://localhost:3000/register')
+
+  })
+})
+
+describe('Tracking page test', () => {
+  it('Tracking page elements exist', () => {
+    cy.visit('http://localhost:3000/tracking')
+
+  })
+})
+
+
 
 
