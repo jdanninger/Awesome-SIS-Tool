@@ -3,8 +3,6 @@
 
     <v-card>
     <v-container>
-
-
     <v-table>
       <thead>
         <tr>
@@ -30,7 +28,7 @@
       </thead>
       <tbody>
         <tr
-          v-for="item in Courses"
+          v-for="item in courses"
           :key="item.name"
         >
           <td>{{ item.code }}</td>
@@ -38,14 +36,34 @@
           <td>{{ item.section }}</td>
           <td>{{ item.days }}</td>
           <td>{{ item.time }}</td>
-          <td><v-btn> <v-icon icon="mdi-close-circle-outline"/> </v-btn></td>
+          <td><v-btn @click = "del_row(item)"> <v-icon icon="mdi-close-circle-outline"/> </v-btn></td>
         </tr>
       </tbody>
     </v-table>
     </v-container>
     </v-card>
+    <br>
+    <v-dialog width="80%">
+      <template v-slot:activator="{ props }">
+        <v-btn v-bind="props" text="Open Dialog"> </v-btn>
+      </template>
 
-    <v-btn class = "center-below"> Add New Search</v-btn>
+      <template v-slot:default="{ isActive }">
+        <v-card title="Dialog">
+          <v-card-text>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+
+            <v-btn
+              text="Close Dialog"
+              @click="isActive.value = false"
+            ></v-btn>
+        </v-card-actions>
+        </v-card>
+      </template>
+    </v-dialog>
    
   </template>
 
@@ -65,7 +83,7 @@
     export default {
       data () {
         return {
-          Courses: [
+          courses: [
             {
               code: 'CSDS',
               number: 233,
@@ -97,5 +115,16 @@
           ],
         }
       },
+      methods: {
+      del_row (item) {
+        // do server stuff here!
+        console.log(item)
+        this.courses = this.courses.filter((obj) => {
+          return obj != item
+        })
+        
+
+      }
+    }
     }
   </script>
