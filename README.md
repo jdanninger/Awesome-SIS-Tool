@@ -5,13 +5,12 @@ This is a web app that notifies users when their classes become available on SIS
 # Set Up 
 
 ## Frontend Dev Setup
+
 ``` 
 cd CCW-Frontend 
 npm install
 npm run dev
 ```
-
-This was done on my mac and hopefully you have your dependencies installed . . . which I didnt keep track of. Hopefully npm install does all the dependencies stuff for you 
 
 ## Backend Setup
 
@@ -22,6 +21,16 @@ pip3 install requirements.txt
 ```
 
 # Running Tests
+
+# Frontend Tests
+
+Run frontend first, then run testcases
+cd CCW-Frontend
+npm run cypress:open
+
+Then chose Chrome browser and run all testcases.
+
+This was done on my mac and hopefully you have your dependencies installed . . . which I didnt keep track of. Hopefully npm install does all the dependencies stuff for you 
 
 ## Backend Tests
 
