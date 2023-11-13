@@ -2,3 +2,5 @@
 __pycache__
 .venv
 Output_CW_GUEST*
+htmlcov
+.coverage
