@@ -1,4 +1,7 @@
 .idea
-SeleniumScraper/__pycache__
-SeleniumScraper/Excel Dump
-SeleniumScraper/production
+__pycache__
+.venv
+Output_CW_GUEST*
+htmlcov
+.coverage
+.DS_Store
