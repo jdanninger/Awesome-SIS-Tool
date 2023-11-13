@@ -18,3 +18,10 @@ python3 -m venv .venv
 source .venv/bin/activate
 pip3 install requirements.txt
 ```
+
+# Running Backend Tests
+
+```
+cd backend/tests
+python3 <test_name>.py
+```

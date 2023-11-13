@@ -10,9 +10,12 @@ from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager, ChromeType
 
 class SISScraper:
-    def __init__(self):
+    def __init__(self, headless=True):
         options = webdriver.ChromeOptions()
-        options.add_argument("--headless")
+
+        if headless:
+            options.add_argument("--headless")
+            
         options.add_experimental_option( "prefs", { "download.default_directory": os.getcwd() })
         self.driver = webdriver.Chrome(
             service=ChromeService(ChromeDriverManager().install()),
