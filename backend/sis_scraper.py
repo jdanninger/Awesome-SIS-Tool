@@ -6,15 +6,18 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.chrome.service import Service as ChromeService
+from webdriver_manager.chrome import ChromeDriverManager, ChromeType
 
 class SISScraper:
     def __init__(self):
-        os.environ['PATH'] += r"chromedriver"
-
         options = webdriver.ChromeOptions()
         options.add_argument("--headless")
         options.add_experimental_option( "prefs", { "download.default_directory": os.getcwd() })
-        self.driver = webdriver.Chrome(options=options)
+        self.driver = webdriver.Chrome(
+            service=ChromeService(ChromeDriverManager().install()),
+            options=options
+        )
         
     def search(self, semester, search_term):
         self.driver.get("https://sisguest.case.edu/psc/P92SCWR_7/EMPLOYEE/SA/c/SSR_STUDENT_FL.SSR_MD_SP_FL.GBL?Action=U&MD=Y&GMenu=SSR_STUDENT_FL&GComp=SSR_START_PAGE_FL&GPage=SSR_START_PAGE_FL&1&scname=CS_SSR_MANAGE_CLASSES_NAV&ICAJAXTrf=true")
@@ -46,3 +49,6 @@ class SISScraper:
         self.driver.find_element(By.ID, "CW_CLSRCH_WRK2_TC_EXCEL_BTN").click()
         WebDriverWait(self.driver, 20).until(EC.invisibility_of_element((By.ID, "processing")))
         time.sleep(2)
+
+        file_name = self.driver.execute_script("return window.downloadFilename")
+        # print(f"Downloaded file name: {file_name}")
