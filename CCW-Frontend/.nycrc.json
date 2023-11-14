@@ -1,0 +1,14 @@
+
+{
+  "all": true,
+  "include": [
+    "src/**/"
+  ],
+  "exclude": [
+    "cypress/*"
+  ],
+  "excludeNodeModules": false,
+  "extension" : [
+    ".vue"
+  ]
+}
