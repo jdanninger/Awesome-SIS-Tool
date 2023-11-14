@@ -2,13 +2,8 @@ import pandas as pd
 import os
 
 class ExcelReader:
-    excelDataframe = None
-    name = None
 
-    def __init__ (self):
-        pass
-
-    def isAvailable(self):
+    def __init__(self):
         files = os.listdir(os.getcwd())
         excel_file = None
 
@@ -17,8 +12,7 @@ class ExcelReader:
                 excel_file = file_name
                 break
 
-        if excel_file is None:
-            return
-            
-        
-        
+        self.filename = excel_file
+
+    def is_available(self):
+        return True
