@@ -5,3 +5,4 @@ Output_CW_GUEST*
 htmlcov
 .coverage
 .DS_Store
+jakob-backend/node_modules
