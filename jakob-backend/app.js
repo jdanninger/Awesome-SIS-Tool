@@ -4,7 +4,14 @@ app.use(express.json())
 
 const port = process.env.PORT || 3000;
 
-users = [{username : "jakobD", email: "jkd50@case.edu", password : "admin", queries : []}]
+users = [{username : "jakobD", email: "jkd50@case.edu", password : "admin", queries : [
+    {"code" : "csds",
+    "number" : "233",
+    "section" : "123",
+    "time" : "8:30",
+    "days" : "M, W, F"
+    }
+]}];
 
 
 app.listen(port, () => {
@@ -45,6 +52,8 @@ app.listen(port, () => {
     response.send(status);
  });
 
+
+
  //^*^*^*^*^*^*^*^*^*^*  login ^*^*^*^*^*^*^*^*^*^* 
 app.post("/login", (request, response) => {
     var status = {
@@ -60,12 +69,82 @@ app.post("/login", (request, response) => {
             }
         }
     }
+    response.send(status);
+});
+
+ //^*^*^*^*^*^*^*^*^*^*  get queries ^*^*^*^*^*^*^*^*^*^* 
+ app.get("/getq", (request, response) => {
+    var status = {
+       "Status": "failed"
+    };
+    let user = request.query.username
+
+    for (let n = 0; n < users.length; n++) {
+        if (users[n].username == user) {
+            status = {
+                "Status": "sucsess",
+                "Queries": users[n].queries
+            }
+        }
+    }
 
 
     response.send(status);
  });
 
+ //^*^*^*^*^*^*^*^*^*^*  new queries ^*^*^*^*^*^*^*^*^*^* 
+ app.post("/newq", (request, response) => {
+    var status = {
+       "Status": "failed"
+    };
+    let user = request.query.username
+    for (let n = 0; n < users.length; n++) {
+        if (users[n].username == user) {
+            let cl = {
+                "code" : request.query.code,
+                "number" : request.query.number,
+                "section" : request.query.section,
+                "time" : request.query.time,
+                "days" : request.query.days
+            };
 
+            users[n].queries.push(cl)
+            status = {
+                "Status": "sucsess",
+            }
+        }
+    }
+
+    response.send(status);
+ });
+
+ //^*^*^*^*^*^*^*^*^*^*  del query ^*^*^*^*^*^*^*^*^*^* 
+ app.post("/delq", (request, response) => {
+    console.log(users[0].queries)
+    var status = {
+       "Status": "failed"
+    };
+    let user = request.query.username
+    for (let n = 0; n < users.length; n++) {
+        
+        if (users[n].username == user) {
+            qs = users[n].queries
+            for (let m = 0; m < qs.length; m++) {
+                if (qs[m]["code"] == request.query.code && qs[m]["number"] == request.query.number) {
+                    qs.splice(m,1)
+                    status = {
+                        "Status": "passed"
+                     };
+                    break;
+                }
+            
+            }
+        }
+    }
+
+
+    response.send(status);
+ });
 
 // ^*^*^*^*^*^*^*^*^*^* status ^*^*^*^*^*^*^*^*^*^* 
   app.get("/status", (request, response) => {
