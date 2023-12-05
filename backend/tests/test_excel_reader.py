@@ -2,7 +2,7 @@ import sys
 sys.path.append('..')
 
 import unittest
-from src.excel_reader import ExcelReader
+from excel_reader import ExcelReader
 
 class TestExcelReader(unittest.TestCase):
     def setUp(self):

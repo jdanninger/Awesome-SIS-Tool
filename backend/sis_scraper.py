@@ -54,7 +54,7 @@ class SISScraper:
 
             print(f"Searching for the course")
 
-            search.send_keys(search_term(course))
+            search.send_keys(self.search_term(course))
             search.send_keys(Keys.RETURN)
             
             self.downloadExcel()
