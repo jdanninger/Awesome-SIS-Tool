@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request
 from sqlalchemy import text
 
 from db_manager import db
+from sis_scraper import SISScraper
 
 app = Flask(__name__)
 
@@ -57,7 +58,7 @@ def login():
 
     return jsonify(message="FAIL")
 
-@app.route("/api/add-course", methods=["GET"])
+@app.route("/api/add-course", methods=["POST"])
 def add_course():
 
     username = request.json.get("username")
@@ -81,6 +82,35 @@ def add_course():
         return jsonify(message="SUCCESS")
 
     return jsonify(message="ERROR")
+
+@app.route("/api/delete-course", methods=["DELETE"])
+def delete_course():
+    pass
+
+@app.route("/api/get-tracked-courses", methods=["GET"])
+def get_tracked_courses():
+    username = request.json.get("username")
+
+    query = text("SELECT * FROM courseinfo WHERE username =: username")
+    result = connection.execute(query, username=username, password=password)
+
+    rows = result.fetchall()
+    
+    # Check if no courses are tracked
+    if len(rows) == 0:
+        return jsonify({})
+    
+    # Get all tracked courses
+    courses = []
+
+    for row in rows:
+        courses.append(row)
+
+    return jsonify(courses)
+
+@app.route("/api/start-tracking", methods=["DELETE"])
+def start_tracking():
+    scraper = SISScraper()
 
 if __name__ == "__main__":
     app.run(debug=True)
