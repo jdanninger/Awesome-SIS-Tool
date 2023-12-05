@@ -12,7 +12,21 @@ class TestSISScraper(unittest.TestCase):
         scraper = SISScraper(headless=True)
 
     def test_search(self):
-        self.scraper.search("Fall 2023", "CSDS 132")
+        # self.scraper.search("Fall 2023", "CSDS 132")
+        self.scraper.check_courses()
+
+    def test_search_term(self):
+        course = {
+            "code": "CSDS"
+            "number": "132"
+        }
+
+        course2 = {
+            "name": "Calculus 1"
+        }
+
+        print(self.scraper.search_term(course))
+        print(self.scraper.search_term(course2))
 
 if __name__ == "__main__":
     unittest.main()

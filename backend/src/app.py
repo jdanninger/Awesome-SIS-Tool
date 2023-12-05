@@ -108,7 +108,7 @@ def get_tracked_courses():
 
     return jsonify(courses)
 
-@app.route("/api/start-tracking", methods=["DELETE"])
+@app.route("/api/start-tracking", methods=["GET"])
 def start_tracking():
     scraper = SISScraper()
 

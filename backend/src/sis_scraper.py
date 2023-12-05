@@ -9,18 +9,63 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 
+from excel_reader import ExcelReader
+
 class SISScraper:
     def __init__(self, headless=True):
         options = webdriver.ChromeOptions()
 
-        if headless:
-            options.add_argument("--headless")
-            
+        if headless: options.add_argument("--headless")
         options.add_experimental_option( "prefs", { "download.default_directory": os.getcwd() })
+        
         self.driver = webdriver.Chrome(
             service=ChromeService(ChromeDriverManager().install()),
             options=options
-        )
+        )        
+
+        self.excel_reader = ExcelReader()
+
+    def search_term(self, course):
+        # Convert course dict to searchable string
+        pass
+
+    def check_courses(self, courses):
+        # Open SIS in the browser
+        print("Opening SIS")
+
+        self.driver.get("https://sisguest.case.edu/psc/P92SCWR_7/EMPLOYEE/SA/c/SSR_STUDENT_FL.SSR_MD_SP_FL.GBL?Action=U&MD=Y&GMenu=SSR_STUDENT_FL&GComp=SSR_START_PAGE_FL&GPage=SSR_START_PAGE_FL&1&scname=CS_SSR_MANAGE_CLASSES_NAV&ICAJAXTrf=true")
+        self.driver.implicitly_wait(10)
+
+        # Click on the Spring 2024 semester
+        print(f"Finding the semester")
+
+        semester_bttn = self.driver.find_element(By.XPATH, "//*[text()='Spring 2024']")
+        self.waitUntilProcesingDone()
+        semester_bttn.click()
+        self.driver.implicitly_wait(10)
+        
+        # Check the availability of each coures
+        availability = []
+
+        for i, course in enumerate(courses):
+            search = self.driver.find_element(By.XPATH, "//input[@placeholder='Search']")
+            self.waitUntilProcesingDone()
+            search.click()
+            self.driver.implicitly_wait(10)
+
+            print(f"Searching for the course")
+
+            search.send_keys(search_term(course))
+            search.send_keys(Keys.RETURN)
+            
+            self.downloadExcel()
+
+            is_available = self.excel_reader.is_available(course)
+            availability.append(is_available)
+
+            print(f"{i} / {len(courses)} checked")
+
+        return availability
 
     def search(self, semester, search_term):
         print("Opening SIS")
