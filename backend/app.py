@@ -76,6 +76,8 @@ def add_course():
         """
     )
 
+    # TODO: check courseinfo field names
+
     data = {
         "username": request.json.get("username"), 
         "code": request.json.get("code"), 
@@ -84,7 +86,7 @@ def add_course():
         "section": request.json.get("section"),
         "days": request.json.get("days"),
         "time": request.json.get("time"),
-        "prof": request.json.get("prof")
+        "prof": request.json.get("prof"),
     }
 
     if insert_data(query, data):
@@ -94,6 +96,8 @@ def add_course():
 
 @app.route("/api/delete-course", methods=["DELETE"])
 def delete_course():
+    # TODO: delete by the auto generated id
+
     pass
 
 @app.route("/api/get-tracked-courses", methods=["GET"])

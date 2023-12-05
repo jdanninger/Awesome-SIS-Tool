@@ -66,6 +66,7 @@ class SISScraper:
 
         return availability
 
+    # TODO: this should be deleted
     def search(self, semester, search_term):
         print("Opening SIS")
 
