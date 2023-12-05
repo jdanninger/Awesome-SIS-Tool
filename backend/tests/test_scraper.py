@@ -18,10 +18,13 @@ class TestSISScraper(unittest.TestCase):
     def test_search_term(self):
         course = {
             "code": "CSDS",
-            "number": "132"
+            "number": "132",
+            "name": "Intro to Programming in Java"
         }
 
         course2 = {
+            "code": None,
+            "number": None,
             "name": "Calculus 1"
         }
 
