@@ -71,22 +71,23 @@ def add_course():
     # Insert course into courseinfo
     query = text(
         """
-        INSERT INTO courseinfo (username, code, number, name, section, days, time, prof)
-        VALUES (:username, :code, :number, :name, :section, :days, :time, :prof);
+        INSERT INTO courseinfo (course_id, course_code, days, time, course_name, professor, section, user_name)
+        VALUES (:course_id, :course_code, :days, :time, :course_name, :professor, :section, :user_name);
         """
     )
 
     # TODO: check courseinfo field names
 
     data = {
-        "username": request.json.get("username"), 
-        "code": request.json.get("code"), 
-        "number": request.json.get("number"), 
-        "name": request.json.get("name"),
-        "section": request.json.get("section"),
-        "days": request.json.get("days"),
+        "course_id": request.json.get("course_id"), 
+        "course_code": request.json.get("course_code"), 
+         "days": request.json.get("days"),
         "time": request.json.get("time"),
-        "prof": request.json.get("prof"),
+        "course_name": request.json.get("course_name"),
+         "professor": request.json.get("professor"),
+        "section": request.json.get("section"),
+        "user_name": request.json.get("user_name")
+       
     }
 
     if insert_data(query, data):
