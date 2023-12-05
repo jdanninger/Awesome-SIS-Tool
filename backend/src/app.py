@@ -1,21 +1,26 @@
+from sqlalchemy import create_engine, text
 
-from flask import Flask, render_template
-import pymysql
+class DBManager:
+    def __init__(self):
+        url = "postgresql://swe_project_user:Hm9jhHzZa5WDHOWQbDTPIiGHHLNScvb3@dpg-cln4iqkjtl8s7397h5n0-a.ohio-postgres.render.com/swe_project"
 
+        engine = create_engine(db_url)
+        connection = engine.connect()
 
+        print(connection)
 
-#app = Flask(__name__)
+        # Example SELECT query on the 'courseinfo' table
+        query = text("SELECT * FROM courseinfo")
+        result = connection.execute(query)
 
-#@app.route("/")
-#def someName():
-   
-    #return render_template("index.html", results=results)
- 
-if __name__ == "__main__":
-   # app.run(debug=True)
-    db = pymysql.connect(host="localhost", user="root", password="Neha0315!", database="case-coursewatch")
-    cursor = db.cursor()
-    sql = "SELECT * FROM `case-coursewatch`.CourseInfo;"
-    cursor.execute(sql)
-    results = cursor.fetchall()
-    print(results)
+        print(result)
+
+        # Fetch all rows from the result set
+        rows = result.fetchall()
+
+        # Print the result
+        for row in rows:
+        print(row)
+
+        # Close the connection
+        connection.close()
