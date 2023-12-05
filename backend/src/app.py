@@ -6,12 +6,15 @@ from sis_scraper import SISScraper
 
 app = Flask(__name__)
 
-def insert_data(query):
+def insert_data(query, data):
     try:
-        db.connection.execute(query, **data)
+        db.connection.execute(query, data)
+        db.connection.commit()
 
     except Exception as e:
         print(f"Error inserting data: {e}")
+        db.connection.rollback()
+
         return False
 
     return True
@@ -20,35 +23,40 @@ def insert_data(query):
 def signup():
     username = request.json.get("username")
     password = request.json.get("password")
+    email = request.json.get("email")
 
     # Make sure username doesn't already exist
-    query = text("SELECT * FROM courseinfo WHERE username =: username")
-    result = connection.execute(query, username=username)
+    query = text("SELECT * FROM login WHERE username = :username")
+    query = query.bindparams(username=username)
 
-    rows = result.fetchall()
+    result = db.connection.execute(query, {'username': username})
 
-    if len(rows) > 0:
+    rows = result.fetchone()
+
+    if rows is not None: # Fail if the username exists
         return jsonify(message="FAIL")
 
     # Insert credentials into the users table
     query = text(
         """
-        INSERT INTO your_table_name (column1, column2, ...)
-        VALUES (:value1, :value2, ...);
+        INSERT INTO login (username, password, email)
+        VALUES (:username, :password, :email);
         """
     )
 
-    if insert_data(query):
+    data = {"username": username, "password": password, "email": email}
+
+    if insert_data(query, data):
         return jsonify(message="SUCCESS")
 
-    return jsonify(message="ERROR")
+    return jsonify(message="FAIL")
 
 @app.route("/api/login", methods=["GET"])
 def login():
     username = request.json.get("username")
     password = request.json.get("password")
 
-    query = text("SELECT * FROM courseinfo WHERE username =: username AND password =: password")
+    query = text("SELECT * FROM courseinfo WHERE username = :username AND password = :password")
     result = connection.execute(query, username=username, password=password)
 
     rows = result.fetchall()
