@@ -68,28 +68,29 @@ def login():
 
 @app.route("/api/add-course", methods=["POST"])
 def add_course():
-
-    username = request.json.get("username")
-    code = request.json.get("code")
-    number = request.json.get("number")
-    name = request.json.get("name")
-    section = request.json.get("section")
-    days = request.json.get("days")
-    time = request.json.get("time")
-    prof = request.json.get("prof")
-
-    # Insert credentials into the users table
+    # Insert course into courseinfo
     query = text(
         """
-        INSERT INTO your_table_name (column1, column2, ...)
-        VALUES (:value1, :value2, ...);
+        INSERT INTO courseinfo (username, code, number, name, section, days, time, prof)
+        VALUES (:username, :code, :number, :name, :section, :days, :time, :prof);
         """
     )
 
-    if insert_data(query):
+    data = {
+        "username": request.json.get("username"), 
+        "code": request.json.get("code"), 
+        "number": request.json.get("number"), 
+        "name": request.json.get("name"),
+        "section": request.json.get("section"),
+        "days": request.json.get("days"),
+        "time": request.json.get("time"),
+        "prof": request.json.get("prof")
+    }
+
+    if insert_data(query, data):
         return jsonify(message="SUCCESS")
 
-    return jsonify(message="ERROR")
+    return jsonify(message="FAIL")
 
 @app.route("/api/delete-course", methods=["DELETE"])
 def delete_course():
@@ -99,8 +100,8 @@ def delete_course():
 def get_tracked_courses():
     username = request.json.get("username")
 
-    query = text("SELECT * FROM courseinfo WHERE username =: username")
-    result = connection.execute(query, username=username, password=password)
+    query = text("SELECT * FROM courseinfo WHERE username = :username")
+    result = db.connection.execute(query, {"username": username})
 
     rows = result.fetchall()
     

@@ -26,8 +26,13 @@ class SISScraper:
         self.excel_reader = ExcelReader()
 
     def search_term(self, course):
-        # Convert course dict to searchable string
-        pass
+        result = ""
+
+        if course["code"] is not None: result += course["code"]
+        if course["number"] is not None: result += course["number"]
+        if course["name"] is not None: result += course["name"]
+
+        return result
 
     def check_courses(self, courses):
         # Open SIS in the browser

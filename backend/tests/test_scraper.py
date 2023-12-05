@@ -2,7 +2,7 @@ import sys
 sys.path.append('..')
 
 import unittest
-from src.sis_scraper import SISScraper
+from sis_scraper import SISScraper
 
 class TestSISScraper(unittest.TestCase):
     def setUp(self):
@@ -17,7 +17,7 @@ class TestSISScraper(unittest.TestCase):
 
     def test_search_term(self):
         course = {
-            "code": "CSDS"
+            "code": "CSDS",
             "number": "132"
         }
 
