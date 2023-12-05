@@ -19,8 +19,8 @@ def insert_data(query, data):
 
     return True
 
-@app.route("/api/signup", methods=["POST"])
-def signup():
+@app.route("/api/sign-up", methods=["POST"])
+def sign_up():
     username = request.json.get("username")
     password = request.json.get("password")
     email = request.json.get("email")
@@ -29,7 +29,7 @@ def signup():
     query = text("SELECT * FROM login WHERE username = :username")
     query = query.bindparams(username=username)
 
-    result = db.connection.execute(query, {'username': username})
+    result = db.connection.execute(query, {"username": username})
 
     rows = result.fetchone()
 
@@ -56,12 +56,12 @@ def login():
     username = request.json.get("username")
     password = request.json.get("password")
 
-    query = text("SELECT * FROM courseinfo WHERE username = :username AND password = :password")
-    result = connection.execute(query, username=username, password=password)
+    query = text("SELECT * FROM login WHERE username = :username AND password = :password")
+    result = db.connection.execute(query, {"username": username, "password": password})
 
-    rows = result.fetchall()
+    rows = result.fetchone()
 
-    if len(rows) == 1:
+    if rows is not None:
         return jsonify(message="SUCCESS")
 
     return jsonify(message="FAIL")
@@ -121,4 +121,4 @@ def start_tracking():
     scraper = SISScraper()
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(port=8000, debug=True)
