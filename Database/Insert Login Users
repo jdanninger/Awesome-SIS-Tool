@@ -1,0 +1,18 @@
+
+
+--- Already inserted 
+INSERT INTO login (username, password, email)
+VALUES (
+    'nxp330',
+    'Neha0315!',
+    'nxp330@case.edu'
+  );
+
+
+
+  INSERT INTO login (username, password, email)
+  VALUES (
+      'taylorSwift',
+      'swiftie523',
+      'ts234@case.edu'
+    );
