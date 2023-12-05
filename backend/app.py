@@ -103,22 +103,19 @@ def delete_course():
 
 @app.route("/api/get-tracked-courses", methods=["GET"])
 def get_tracked_courses():
-    username = request.json.get("username")
+    username = request.json.get("user_name")
 
-    query = text("SELECT * FROM courseinfo WHERE username = :username")
-    result = db.connection.execute(query, {"username": username})
+    query = text("SELECT * FROM courseinfo WHERE user_name = user_name")
+    result = db.connection.execute(query, {"user_name": username})
 
     rows = result.fetchall()
-    
+
     # Check if no courses are tracked
     if len(rows) == 0:
         return jsonify({})
-    
-    # Get all tracked courses
-    courses = []
 
-    for row in rows:
-        courses.append(row)
+    # Return tracked courses
+    courses = [row._asdict() for row in rows]
 
     return jsonify(courses)
 
