@@ -2,8 +2,7 @@ import pandas as pd
 import os
 
 class ExcelReader:
-
-    def __init__(self):
+    def get_csv_path(self):
         files = os.listdir(os.getcwd())
 
         excel_file = ""
@@ -13,7 +12,15 @@ class ExcelReader:
                 excel_file = f
                 break
         
-        self.filename = str(excel_file)
+        return excel_file
+
+    def is_available(self, course):     
+        csv_path = self.get_csv_path()
+
+        df = pd.read_excel(csv_path)
+        os.remove(csv_path)
+
+        mask = pd.Series(False, index=df.index)
 
         # course dict keys mapped to the downloaded csv column names
         self.csv_headers = {
@@ -26,13 +33,6 @@ class ExcelReader:
             "prof": "INSTR_NAME"
         }
 
-    def is_available(self, course):
-        print(self.filename)
-        print(type(self.filename))
-        df = pd.read_excel(self.filename)
-
-        mask = pd.Series(False, index=df.index)
-
         for key in course.keys():
             if course[key] is not None:
                 if key == "name":
@@ -41,21 +41,9 @@ class ExcelReader:
                     mask |= (course[key] == df[self.csv_headers[key]])
 
         df = df[mask]
-        
-        # # List to store matching entries
-        # matching_entries = []
 
-        # # Loop through all rows
-        # for index, row in df.iterrows():
-        #     if "Open" in str(row['HELLO']).lower():
-        #         matching_entries.append(row)
+        for _, row in df.iterrows():
+            if "Open" in str(row["ENRL_STATUS"]):
+                return True
 
-        # # Create a new DataFrame from the matching entries
-        # filtered_df = pd.DataFrame(matching_entries)
-
-        # print(filtered_df)
-
-        return True
-
-    def delete_csv(self):
-        pass
+        return False

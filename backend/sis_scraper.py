@@ -37,7 +37,7 @@ class SISScraper:
         print(f"Finding the semester")
 
         semester_bttn = self.driver.find_element(By.XPATH, "//*[text()='Spring 2024']")
-        self.waitUntilProcesingDone()
+        self.wait_to_process()
         semester_bttn.click()
         self.driver.implicitly_wait(10)
 
@@ -46,8 +46,10 @@ class SISScraper:
 
         for i, course in enumerate(courses):
             search = self.driver.find_element(By.XPATH, "//input[@placeholder='Search']")
-            self.waitUntilProcesingDone()
+            self.wait_to_process()
             search.click()
+            search.clear()
+            
             self.driver.implicitly_wait(10)
 
             print(f"Searching for the course")
@@ -55,54 +57,28 @@ class SISScraper:
             search.send_keys(self.search_term(course))
             search.send_keys(Keys.RETURN)
             
-            self.downloadExcel()
+            self.download_excel()
 
             reader = ExcelReader()
 
             is_available = reader.is_available(course)
             availability.append(is_available)
 
-            print(f"{i} / {len(courses)} checked")
+            print(f"{i+1} / {len(courses)} courses checked")
 
         return availability
 
-    # TODO: this should be deleted
-    def search(self, semester, search_term):
-        print("Opening SIS")
-
-        self.driver.get("https://sisguest.case.edu/psc/P92SCWR_7/EMPLOYEE/SA/c/SSR_STUDENT_FL.SSR_MD_SP_FL.GBL?Action=U&MD=Y&GMenu=SSR_STUDENT_FL&GComp=SSR_START_PAGE_FL&GPage=SSR_START_PAGE_FL&1&scname=CS_SSR_MANAGE_CLASSES_NAV&ICAJAXTrf=true")
-        self.driver.implicitly_wait(10)
-
-        print(f"Finding {semester}")
-
-        semester_bttn = self.driver.find_element(By.XPATH, "//*[text()='" + semester + "']")
-        self.waitUntilProcesingDone()
-        semester_bttn.click()
-        self.driver.implicitly_wait(10)
-        
-        search = self.driver.find_element(By.XPATH, "//input[@placeholder='Search']")
-        self.waitUntilProcesingDone()
-        search.click()
-        self.driver.implicitly_wait(10)
-
-        print(f"Searching for {search_term}")
-        search.send_keys(search_term)
-        search.send_keys(Keys.RETURN)
-        self.downloadExcel()
-
-        print("Finished")
-
-    def waitUntilProcesingDone(self):
+    def wait_to_process(self):
         WebDriverWait(self.driver, 60).until(
             EC.invisibility_of_element(
                 (By.ID, "processing")
             )
         )
 
-    def downloadExcel(self):
+    def download_excel(self):
         print(f"Downloading the excel file")
 
-        self.waitUntilProcesingDone()
+        self.wait_to_process()
         self.driver.find_element(By.ID, "CW_CLSRCH_WRK2_TC_EXCEL_BTN").click()
         WebDriverWait(self.driver, 20).until(EC.invisibility_of_element((By.ID, "processing")))
         time.sleep(2)
