@@ -5,12 +5,18 @@ from db_manager import db
 
 app = Flask(__name__)
 
-@app.route("/")
-def hello_world():
-    return 'Hello, World!'
+def insert_data(query):
+    try:
+        db.connection.execute(query, **data)
+
+    except Exception as e:
+        print(f"Error inserting data: {e}")
+        return False
+
+    return True
 
 @app.route("/api/signup", methods=["POST"])
-def test_endpoint():
+def signup():
     username = request.json.get("username")
     password = request.json.get("password")
 
@@ -24,24 +30,20 @@ def test_endpoint():
         return jsonify(message="FAIL")
 
     # Insert credentials into the users table
-    insert_query = text(
+    query = text(
         """
         INSERT INTO your_table_name (column1, column2, ...)
         VALUES (:value1, :value2, ...);
         """
     )
 
-    try:
-        db.connection.execute(insert_query, **data)
+    if insert_data(query):
+        return jsonify(message="SUCCESS")
 
-    except Exception as e:
-        print(f"Error inserting data: {e}")
-        return jsonify(message="ERROR")
-
-    return jsonify(message="SUCCESS")
+    return jsonify(message="ERROR")
 
 @app.route("/api/login", methods=["GET"])
-def test_endpoint():
+def login():
     username = request.json.get("username")
     password = request.json.get("password")
 
@@ -54,6 +56,31 @@ def test_endpoint():
         return jsonify(message="SUCCESS")
 
     return jsonify(message="FAIL")
+
+@app.route("/api/add-course", methods=["GET"])
+def add_course():
+
+    username = request.json.get("username")
+    code = request.json.get("code")
+    number = request.json.get("number")
+    name = request.json.get("name")
+    section = request.json.get("section")
+    days = request.json.get("days")
+    time = request.json.get("time")
+    prof = request.json.get("prof")
+
+    # Insert credentials into the users table
+    query = text(
+        """
+        INSERT INTO your_table_name (column1, column2, ...)
+        VALUES (:value1, :value2, ...);
+        """
+    )
+
+    if insert_data(query):
+        return jsonify(message="SUCCESS")
+
+    return jsonify(message="ERROR")
 
 if __name__ == "__main__":
     app.run(debug=True)
