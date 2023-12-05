@@ -4,7 +4,7 @@
     <v-alert
       density="compact"
       type="warning"
-      title="Alert title"
+      title="Alert"
       text="Username or Password is invalid"
       visible="false"
       v-if="bad_login"
@@ -34,6 +34,7 @@
 </style>
 
 <script>
+import $ from 'jquery';
   export default {
     data: () => ({
       bad_login: false,
@@ -42,13 +43,33 @@
     }),
     methods: {
       async submit (event) {
-        //Submit stuff code here .  . . if
-          if(this.username == "admin" && this.password == "admin") {
+
+        var settings = {
+          "url": "http://localhost:8000/api/login",
+          "method": "POST",
+          "timeout": 0,
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "data": JSON.stringify({
+            "username": this.username,
+            "password": this.password,
+          }),
+        };
+        let resp;
+        $.ajax(settings).done(function (response) {
+          resp = resp
+          console.log(response)
+          if (response.message == "SUCCESS") {
             window.location.href = "/tracking"
-          } else {
-            this.bad_login = true
-          }
-          
+          } 
+        });
+
+        setTimeout(() => {
+        this.bad_login = true;
+        }, 250);
+        
+
       }
     }
   }
