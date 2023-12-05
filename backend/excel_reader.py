@@ -2,20 +2,25 @@ import pandas as pd
 import os
 
 class ExcelReader:
-
-    def __init__(self):
+    def get_csv_path(self):
         files = os.listdir(os.getcwd())
-        excel_file = None
+
+        excel_file = ""
 
         for f in files:
-            print(f)
-
             if "Output_CW_GUEST" in f and ".xlsx" in f:
                 excel_file = f
                 break
+        
+        return excel_file
 
-        self.filename = excel_file
-        print(self.filename)
+    def is_available(self, course):     
+        csv_path = self.get_csv_path()
+
+        df = pd.read_excel(csv_path)
+        os.remove(csv_path)
+
+        mask = pd.Series(False, index=df.index)
 
         # course dict keys mapped to the downloaded csv column names
         self.csv_headers = {
@@ -28,11 +33,6 @@ class ExcelReader:
             "prof": "INSTR_NAME"
         }
 
-    def is_available(self, course):
-        df = pd.read_csv(self.filename)
-
-        mask = pd.Series(False, index=df.index)
-
         for key in course.keys():
             if course[key] is not None:
                 if key == "name":
@@ -40,11 +40,10 @@ class ExcelReader:
                 else:
                     mask |= (course[key] == df[self.csv_headers[key]])
 
-        filtered_df = df[mask]
-        
-        print(filtered_df)
+        df = df[mask]
 
-        return True
+        for _, row in df.iterrows():
+            if "Open" in str(row["ENRL_STATUS"]):
+                return True
 
-    def delete_csv(self):
-        pass
+        return False

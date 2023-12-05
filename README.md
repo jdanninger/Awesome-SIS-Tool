@@ -28,9 +28,7 @@ Run frontend first, then run testcases
 cd CCW-Frontend
 npm run cypress:open
 
-Then chose Chrome browser and run all testcases.
-
-This was done on my mac and hopefully you have your dependencies installed . . . which I didnt keep track of. Hopefully npm install does all the dependencies stuff for you 
+Then choose Chrome browser and run all testcases.
 
 ## Backend Tests
 

@@ -22,7 +22,17 @@ class TestSISScraper(unittest.TestCase):
             "prof": None
         }
 
-        self.scraper.check_courses([course])
+        course2 = {
+            "code": "MATH",
+            "number": "122",
+            "name": None,
+            "section": None,
+            "days": None,
+            "time": None,
+            "prof": None
+        }
+
+        self.scraper.check_courses([course, course2])
 
     # def test_search_term(self):
     #     course = {

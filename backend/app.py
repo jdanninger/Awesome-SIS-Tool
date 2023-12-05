@@ -73,22 +73,23 @@ def add_course():
     # Insert course into courseinfo
     query = text(
         """
-        INSERT INTO courseinfo (username, code, number, name, section, days, time, prof)
-        VALUES (:username, :code, :number, :name, :section, :days, :time, :prof);
+        INSERT INTO courseinfo (course_id, course_code, days, time, course_name, professor, section, user_name)
+        VALUES (:course_id, :course_code, :days, :time, :course_name, :professor, :section, :user_name);
         """
     )
 
     # TODO: check courseinfo field names
 
     data = {
-        "username": request.json.get("username"), 
-        "code": request.json.get("code"), 
-        "number": request.json.get("number"), 
-        "name": request.json.get("name"),
-        "section": request.json.get("section"),
-        "days": request.json.get("days"),
+        "course_id": request.json.get("course_id"), 
+        "course_code": request.json.get("course_code"), 
+         "days": request.json.get("days"),
         "time": request.json.get("time"),
-        "prof": request.json.get("prof"),
+        "course_name": request.json.get("course_name"),
+         "professor": request.json.get("professor"),
+        "section": request.json.get("section"),
+        "user_name": request.json.get("user_name")
+       
     }
 
     if insert_data(query, data):
@@ -104,22 +105,19 @@ def delete_course():
 
 @app.route("/api/get-tracked-courses", methods=["GET"])
 def get_tracked_courses():
-    username = request.json.get("username")
+    username = request.json.get("user_name")
 
-    query = text("SELECT * FROM courseinfo WHERE username = :username")
-    result = db.connection.execute(query, {"username": username})
+    query = text("SELECT * FROM courseinfo WHERE user_name = user_name")
+    result = db.connection.execute(query, {"user_name": username})
 
     rows = result.fetchall()
-    
+
     # Check if no courses are tracked
     if len(rows) == 0:
         return jsonify({})
-    
-    # Get all tracked courses
-    courses = []
 
-    for row in rows:
-        courses.append(row)
+    # Return tracked courses
+    courses = [row._asdict() for row in rows]
 
     return jsonify(courses)
 
