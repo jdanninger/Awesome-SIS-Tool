@@ -23,8 +23,6 @@ class SISScraper:
             options=options
         )        
 
-        self.excel_reader = ExcelReader()
-
     def search_term(self, course): 
         return " ".join(str(course[field]) for field in ["code", "number", "name"] if course[field] is not None)
 
@@ -42,7 +40,7 @@ class SISScraper:
         self.waitUntilProcesingDone()
         semester_bttn.click()
         self.driver.implicitly_wait(10)
-        
+
         # Check the availability of each coures
         availability = []
 
@@ -59,7 +57,9 @@ class SISScraper:
             
             self.downloadExcel()
 
-            is_available = self.excel_reader.is_available(course)
+            reader = ExcelReader()
+
+            is_available = reader.is_available(course)
             availability.append(is_available)
 
             print(f"{i} / {len(courses)} checked")
