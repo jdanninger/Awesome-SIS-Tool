@@ -1,26 +1,36 @@
-from sqlalchemy import create_engine, text
+from flask import Flask, jsonify, request
+from db_manager import db
 
-class DBManager:
-    def __init__(self):
-        url = "postgresql://swe_project_user:Hm9jhHzZa5WDHOWQbDTPIiGHHLNScvb3@dpg-cln4iqkjtl8s7397h5n0-a.ohio-postgres.render.com/swe_project"
+app = Flask(__name__)
 
-        engine = create_engine(db_url)
-        connection = engine.connect()
+@app.route("/")
+def hello_world():
+    return 'Hello, World!'
 
-        print(connection)
+@app.route("/api/create-new-user", methods=["POST"])
+def test_endpoint():
+    username = request.json.get("username")
+    password = request.json.get("password")
 
-        # Example SELECT query on the 'courseinfo' table
-        query = text("SELECT * FROM courseinfo")
-        result = connection.execute(query)
+    print(username)
+    print(password)
 
-        print(result)
+    return jsonify(message="SUCCESS")
 
-        # Fetch all rows from the result set
-        rows = result.fetchall()
+    # insert_query = text(
+    #     """
+    #     INSERT INTO your_table_name (column1, column2, ...)
+    #     VALUES (:value1, :value2, ...);
+    #     """
+    # )
 
-        # Print the result
-        for row in rows:
-        print(row)
+    # try:
+    #     self.connection.execute(insert_query, **data)
+    #     return jsonify(message="SUCCESS")
 
-        # Close the connection
-        connection.close()
+    # except Exception as e:
+    #     print(f"Error inserting data: {e}")
+    #     return jsonify(message="ERROR")
+
+if __name__ == '__main__':
+    app.run(debug=True)
