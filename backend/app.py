@@ -99,10 +99,13 @@ def add_course():
 @app.route("/api/delete-course", methods=["DELETE"])
 def delete_course():
     # TODO: delete by the auto generated id
+    course_id = request.json.get("course_id")
 
-    
+    query = text("DELETE FROM courseinfo WHERE course_id = :course_id")
+    result = db.connection.execute(query, {"course_id": course_id})
+    db.connection.commit()
 
-    pass
+    return jsonify(message="SUCCESS")
 
 def get_tracked_courses_from_db(request):
     username = request.json.get("user_name")

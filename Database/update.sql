@@ -63,8 +63,20 @@ VALUES (
 --WHERE course_name = 'Structured and Unstructured Data';
 
 
+
+--DROP TABLE searchhistory;
+
 DELETE FROM courseinfo
-WHERE course_name = 'DNE';
+WHERE course_id = 49;
+
+
+
+--SELECT * FROM courseinfo
+--WHERE course_id = 10;
+
+
+
+
 
 
 
