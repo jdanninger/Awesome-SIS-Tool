@@ -24,7 +24,7 @@ class SISScraper:
         )        
 
     def search_term(self, course): 
-        return " ".join(str(course[field]) for field in ["code", "number", "name"] if course[field] is not None)
+        return " ".join(str(course[field]) for field in ["course_code", "course_name"] if course[field] is not None)
 
     def check_courses(self, courses):
         # Open SIS in the browser

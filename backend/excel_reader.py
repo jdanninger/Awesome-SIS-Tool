@@ -24,13 +24,13 @@ class ExcelReader:
 
         # course dict keys mapped to the downloaded csv column names
         self.csv_headers = {
-            "code": "SUBJECT",
-            "number": "CATALOG_NBR",
-            "name": "CW_CLASS_TITLE",
+            "course_code": "SUBJECT",
+            "course_number": "CATALOG_NBR",
+            "course_name": "CW_CLASS_TITLE",
             "section": "CLASS_SECTION",
             "days": "CLASS_MTG_DAYS",
             "time": "CW_CLASS_MTG_TIMES",
-            "prof": "INSTR_NAME"
+            "professor": "INSTR_NAME"
         }
 
         for key in course.keys():

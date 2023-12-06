@@ -101,14 +101,18 @@ def delete_course():
 
     pass
 
-@app.route("/api/get-tracked-courses", methods=["GET"])
-def get_tracked_courses():
+def get_tracked_courses_from_db(request):
     username = request.json.get("user_name")
 
     query = text("SELECT * FROM courseinfo WHERE user_name = user_name")
     result = db.connection.execute(query, {"user_name": username})
 
-    rows = result.fetchall()
+    return result.fetchall()
+
+
+@app.route("/api/get-tracked-courses", methods=["GET"])
+def get_tracked_courses():
+    rows = get_tracked_courses_from_db(request)
 
     # Check if no courses are tracked
     if len(rows) == 0:
@@ -121,7 +125,16 @@ def get_tracked_courses():
 
 @app.route("/api/start-tracking", methods=["GET"])
 def start_tracking():
+    rows = get_tracked_courses_from_db(request)
+
+    courses = [row._asdict() for row in rows]
+
     scraper = SISScraper()
+    availability = scraper.check_courses(courses)
+
+    # print(availability)
+
+    return jsonify(message="SUCCESS")
 
 if __name__ == "__main__":
     app.run(port=8000, debug=True)
