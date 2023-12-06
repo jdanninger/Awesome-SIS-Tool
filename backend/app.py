@@ -123,7 +123,7 @@ def get_tracked_courses():
 
     return jsonify(courses)
 
-@app.route("/api/start-tracking", methods=["GET"])
+@app.route("/api/start-tracking", methods=["POST"])
 def start_tracking():
     rows = get_tracked_courses_from_db(request)
 
