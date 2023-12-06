@@ -2,6 +2,8 @@ import os
 import time
 
 from selenium.webdriver.common.keys import Keys
+from selenium.common.exceptions import NoSuchElementException
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -12,7 +14,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from excel_reader import ExcelReader
 
 class SISScraper:
-    def __init__(self, headless=True):
+    def __init__(self, headless=False):
         options = webdriver.ChromeOptions()
 
         if headless: options.add_argument("--headless")
@@ -24,7 +26,7 @@ class SISScraper:
         )        
 
     def search_term(self, course): 
-        return " ".join(str(course[field]) for field in ["code", "number", "name"] if course[field] is not None)
+        return " ".join(str(course[field]) for field in ["course_code", "course_num", "course_name"] if course[field] is not None)
 
     def check_courses(self, courses):
         # Open SIS in the browser
@@ -57,6 +59,19 @@ class SISScraper:
             search.send_keys(self.search_term(course))
             search.send_keys(Keys.RETURN)
             
+            self.driver.implicitly_wait(10)
+
+            try:
+                element = self.driver.find_element(By.XPATH, f"//*[contains(text(), 'The search returns no results')]")
+                button = self.driver.find_element(By.ID, '#ICOK')
+                button.click()
+
+                availability.append("DNE")
+                continue
+            
+            except NoSuchElementException:
+                pass
+
             self.download_excel()
 
             reader = ExcelReader()

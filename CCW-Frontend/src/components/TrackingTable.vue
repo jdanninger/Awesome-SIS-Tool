@@ -31,8 +31,8 @@
           v-for="item in courses"
           :key="item.name"
         >
-          <td>{{ item.code }}</td>
-          <td>{{ item.number }}</td>
+          <td>{{ item.course_code }}</td>
+          <td>{{ item.course_id }}</td>
           <td>{{ item.section }}</td>
           <td>{{ item.days }}</td>
           <td>{{ item.time }}</td>
@@ -188,45 +188,40 @@
 
 
   <script>
+import $ from 'jquery';
     export default {
       data () {
         return {
           code: '',
           number: '',
           section: '',
-
           dialog: false,
-          courses: [
-            {
-              code: 'CSDS',
-              number: 233,
-              section: 1234,
-              days: "M W F",
-              time: "8:30 am"
-            },
-            {
-              code: 'CSDS',
-              number: 132,
-              section: 1234,
-              days: "M W F",
-              time: "8:30 am"
-            },
-            {
-              code: 'ENGL',
-              number: 101,
-              section: 1234,
-              days: "M W F",
-              time: "8:30 am"
-            },
-            {
-              code: 'USNA',
-              number: 291,
-              section: 1234,
-              days: "M W F",
-              time: "8:30 am"
-            },
-          ],
+          courses: null
         }
+      },
+      mounted() {
+
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        var raw = JSON.stringify({
+          "username": "asdf"
+        });
+
+        var requestOptions = {
+          method: 'POST',
+          headers: myHeaders,
+          body: raw,
+          redirect: 'follow'
+        };
+
+        fetch("http://localhost:8000/api/get-tracked-courses", requestOptions)
+          .then(response => response.text())
+          .then(result =>  {this.courses = JSON.parse(result); console.log(this.courses)})
+          .catch(error => console.log('error', error));
+
+        
+
       },
       methods: {
       del_row (item) {
@@ -249,4 +244,7 @@
       },
     }
     }
+
+
+
   </script>

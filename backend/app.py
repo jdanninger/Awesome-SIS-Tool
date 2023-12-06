@@ -3,8 +3,10 @@ from sqlalchemy import text
 
 from db_manager import db
 from sis_scraper import SISScraper
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 def insert_data(query, data):
     try:
@@ -51,7 +53,7 @@ def sign_up():
 
     return jsonify(message="FAIL")
 
-@app.route("/api/login", methods=["GET"])
+@app.route("/api/login", methods=["POST"])
 def login():
     username = request.json.get("username")
     password = request.json.get("password")
@@ -71,15 +73,14 @@ def add_course():
     # Insert course into courseinfo
     query = text(
         """
-        INSERT INTO courseinfo (course_id, course_code, days, time, course_name, professor, section, user_name)
-        VALUES (:course_id, :course_code, :days, :time, :course_name, :professor, :section, :user_name);
+        INSERT INTO courseinfo (course_code, days, time, course_name, professor, section, user_name)
+        VALUES (:course_code, :days, :time, :course_name, :professor, :section, :user_name);
         """
     )
 
     # TODO: check courseinfo field names
 
     data = {
-        "course_id": request.json.get("course_id"), 
         "course_code": request.json.get("course_code"), 
          "days": request.json.get("days"),
         "time": request.json.get("time"),
@@ -87,7 +88,6 @@ def add_course():
          "professor": request.json.get("professor"),
         "section": request.json.get("section"),
         "user_name": request.json.get("user_name")
-       
     }
 
     if insert_data(query, data):
@@ -104,14 +104,18 @@ def delete_course():
 
     pass
 
-@app.route("/api/get-tracked-courses", methods=["GET"])
-def get_tracked_courses():
+def get_tracked_courses_from_db(request):
     username = request.json.get("user_name")
 
-    query = text("SELECT * FROM courseinfo WHERE user_name = user_name")
+    query = text("SELECT * FROM courseinfo WHERE user_name = :user_name")
     result = db.connection.execute(query, {"user_name": username})
 
-    rows = result.fetchall()
+    return result.fetchall()
+
+
+@app.route("/api/get-tracked-courses", methods=["POST"])
+def get_tracked_courses():
+    rows = get_tracked_courses_from_db(request)
 
     # Check if no courses are tracked
     if len(rows) == 0:
@@ -122,9 +126,16 @@ def get_tracked_courses():
 
     return jsonify(courses)
 
-@app.route("/api/start-tracking", methods=["GET"])
+@app.route("/api/start-tracking", methods=["POST"])
 def start_tracking():
+    rows = get_tracked_courses_from_db(request)
+
+    courses = [row._asdict() for row in rows]
+
     scraper = SISScraper()
+    availability = scraper.check_courses(courses)
+
+    return jsonify(message=availability)
 
 if __name__ == "__main__":
     app.run(port=8000, debug=True)
