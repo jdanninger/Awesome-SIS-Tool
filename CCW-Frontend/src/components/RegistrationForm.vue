@@ -44,6 +44,7 @@
     </style>
     
     <script>
+import $ from 'jquery';
   export default {
     data: () => ({
       email: '',
@@ -103,8 +104,35 @@
         } else if (!valid_conf_password) {
 
         } else {
+
+          var settings = {
+            "url": "http://localhost:8000/api/sign-up",
+            "method": "POST",
+            "timeout": 0,
+            "headers": {
+              "Content-Type": "application/json"
+            },
+            "data": JSON.stringify({
+              "username": this.username,
+              "password": this.password,
+              "email": this.email
+            }),
+          };
+
+          $.ajax(settings).done(function (response) {
+            console.log(response)
+            if (response.message == "SUCCESS") {
+              window.location.href = "/tracking"
+            } else {
+              alert("registration failed!")
+            }
+          });
+
+
+
+
             //todo: send data to server!
-            window.location.href = "/login"
+            // window.location.href = "/login"
             return
         }
 

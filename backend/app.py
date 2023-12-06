@@ -109,7 +109,8 @@ def get_tracked_courses_from_db(request):
 
     return result.fetchall()
 
-@app.route("/api/get-tracked-courses", methods=["GET"])
+
+@app.route("/api/get-tracked-courses", methods=["POST"])
 def get_tracked_courses():
     rows = get_tracked_courses_from_db(request)
 
