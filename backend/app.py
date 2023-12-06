@@ -3,8 +3,10 @@ from sqlalchemy import text
 
 from db_manager import db
 from sis_scraper import SISScraper
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 def insert_data(query, data):
     try:
@@ -51,7 +53,7 @@ def sign_up():
 
     return jsonify(message="FAIL")
 
-@app.route("/api/login", methods=["GET"])
+@app.route("/api/login", methods=["POST"])
 def login():
     username = request.json.get("username")
     password = request.json.get("password")

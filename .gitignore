@@ -7,3 +7,4 @@ htmlcov
 .coverage
 .DS_Store
 jakob-backend/node_modules
+connection1.session.sql
