@@ -73,15 +73,14 @@ def add_course():
     # Insert course into courseinfo
     query = text(
         """
-        INSERT INTO courseinfo (course_id, course_code, days, time, course_name, professor, section, user_name)
-        VALUES (:course_id, :course_code, :days, :time, :course_name, :professor, :section, :user_name);
+        INSERT INTO courseinfo (course_code, days, time, course_name, professor, section, user_name)
+        VALUES (:course_code, :days, :time, :course_name, :professor, :section, :user_name);
         """
     )
 
     # TODO: check courseinfo field names
 
     data = {
-        "course_id": request.json.get("course_id"), 
         "course_code": request.json.get("course_code"), 
          "days": request.json.get("days"),
         "time": request.json.get("time"),
@@ -89,7 +88,6 @@ def add_course():
          "professor": request.json.get("professor"),
         "section": request.json.get("section"),
         "user_name": request.json.get("user_name")
-       
     }
 
     if insert_data(query, data):
@@ -106,11 +104,10 @@ def delete_course():
 def get_tracked_courses_from_db(request):
     username = request.json.get("user_name")
 
-    query = text("SELECT * FROM courseinfo WHERE user_name = user_name")
+    query = text("SELECT * FROM courseinfo WHERE user_name = :user_name")
     result = db.connection.execute(query, {"user_name": username})
 
     return result.fetchall()
-
 
 @app.route("/api/get-tracked-courses", methods=["GET"])
 def get_tracked_courses():
@@ -134,7 +131,7 @@ def start_tracking():
     scraper = SISScraper()
     availability = scraper.check_courses(courses)
 
-    # print(availability)
+    print(availability)
 
     return jsonify(message="SUCCESS")
 

@@ -25,7 +25,7 @@ class ExcelReader:
         # course dict keys mapped to the downloaded csv column names
         self.csv_headers = {
             "course_code": "SUBJECT",
-            "course_number": "CATALOG_NBR",
+            "course_num": "CATALOG_NBR",
             "course_name": "CW_CLASS_TITLE",
             "section": "CLASS_SECTION",
             "days": "CLASS_MTG_DAYS",
@@ -35,6 +35,9 @@ class ExcelReader:
 
         for key in course.keys():
             if course[key] is not None:
+                if key == "course_id" or key == "user_name":
+                    continue
+
                 if key == "name":
                     mask |= (course[key] in df[self.csv_headers[key]])
                 else:
