@@ -62,9 +62,15 @@ class SISScraper:
             self.driver.implicitly_wait(10)
 
             try:
-                self.driver.find_element_by_xpath(f"//*[contains(text(), 'The search returns no results')]")
-            except NoSuchElementException:
+                element = self.driver.find_element(By.XPATH, f"//*[contains(text(), 'The search returns no results')]")
+                button = self.driver.find_element(By.ID, '#ICOK')
+                button.click()
+
+                availability.append("DNE")
                 continue
+            
+            except NoSuchElementException:
+                pass
 
             self.download_excel()
 

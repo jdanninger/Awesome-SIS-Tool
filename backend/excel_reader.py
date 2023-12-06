@@ -47,6 +47,6 @@ class ExcelReader:
 
         for _, row in df.iterrows():
             if "Open" in str(row["ENRL_STATUS"]):
-                return True
+                return "Open"
 
-        return False
+        return "Closed"

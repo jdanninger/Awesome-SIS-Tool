@@ -132,9 +132,7 @@ def start_tracking():
     scraper = SISScraper()
     availability = scraper.check_courses(courses)
 
-    print(availability)
-
-    return jsonify(message="SUCCESS")
+    return jsonify(message=availability)
 
 if __name__ == "__main__":
     app.run(port=8000, debug=True)
