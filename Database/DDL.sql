@@ -1,8 +1,4 @@
 
-
-
-
-
 --Already created tables 
 /*CREATE TABLE searchHistory (
     username VARCHAR(20) NOT NULL, 

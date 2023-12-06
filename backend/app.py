@@ -95,9 +95,12 @@ def add_course():
 
     return jsonify(message="FAIL")
 
+#do this 
 @app.route("/api/delete-course", methods=["DELETE"])
 def delete_course():
     # TODO: delete by the auto generated id
+
+    
 
     pass
 
