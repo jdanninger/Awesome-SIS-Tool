@@ -42,8 +42,9 @@ class ExcelReader:
                     mask |= (course[key] == df[self.csv_headers[key]])
 
         df = df[mask]
-        df = df[df["INSTR_NAME"].apply(lambda x: str(x).lower()) == course["professor"].lower()]
-        df = df[df["CW_CLASS_TITLE"].apply(lambda x: str(x).lower()) == course["course_name"].lower()]
+
+        df = df[df["INSTR_NAME"].apply(lambda x: str(x).lower()).str.contains(course["professor"].lower())]
+        df = df[df["CW_CLASS_TITLE"].apply(lambda x: str(x).lower()).str.contains(course["course_name"].lower())]
 
         for _, row in df.iterrows():
             if "Open" in str(row["ENRL_STATUS"]):
