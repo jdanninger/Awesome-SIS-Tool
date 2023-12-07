@@ -39,7 +39,7 @@ const routes = [
     ],
   },
   {
-    path: '/tracking',
+    path: '/tracking/:user',
     component: () => import('@/layouts/default/Default.vue'),
     children: [
       {
