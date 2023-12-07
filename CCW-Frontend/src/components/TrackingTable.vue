@@ -8,9 +8,6 @@
             Code
           </th>
           <th class="text-left">
-            Number
-          </th>
-          <th class="text-left">
             Name
           </th>
           <th class="text-left">
@@ -30,7 +27,6 @@
           :key="item.name"
         >
           <td>{{ item.course_code }}</td>
-          <td>{{ item.course_id }}</td>
           <td>{{ item.course_name }}</td>
           <td>{{ item.days }}</td>
           <td>{{ item.time }}</td>
@@ -232,7 +228,24 @@
       methods: {
       del_row (item) {
 
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
 
+        var raw = JSON.stringify({
+          "course_id": item.course_id
+        });
+
+        var requestOptions = {
+          method: 'DELETE',
+          headers: myHeaders,
+          body: raw,
+          redirect: 'follow'
+        };
+
+        fetch("http://localhost:8000/api/delete-course", requestOptions)
+          .then(response => response.text())
+          .then(result => console.log(result))
+          .catch(error => console.log('error', error));
 
         // do server stuff here!
         console.log(item)
@@ -278,7 +291,6 @@
             "user_name": this.un
           }
         )
-        // add to server stuff
 
 
 
