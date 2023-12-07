@@ -55,8 +55,11 @@ Click add course and start class search to see if a class in open.
 ## Frontend Tests
 
 Run frontend first, then run testcases
+
+```
 cd CCW-Frontend
 npm run cypress:open
+```
 
 Then choose Chrome browser and run all testcases.
 
