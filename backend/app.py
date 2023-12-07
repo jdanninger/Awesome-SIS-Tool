@@ -73,8 +73,8 @@ def add_course():
     # Insert course into courseinfo
     query = text(
         """
-        INSERT INTO courseinfo (course_code, days, time, course_name, professor, section, user_name)
-        VALUES (:course_code, :days, :time, :course_name, :professor, :section, :user_name);
+        INSERT INTO courseinfo (course_code, days, time, course_name, professor, section, user_name, course_num)
+        VALUES (:course_code, :days, :time, :course_name, :professor, :section, :user_name, :course_num);
         """
     )
 
@@ -87,7 +87,8 @@ def add_course():
         "course_name": request.json.get("course_name"),
          "professor": request.json.get("professor"),
         "section": request.json.get("section"),
-        "user_name": request.json.get("user_name")
+        "user_name": request.json.get("user_name"),
+        "course_num": request.json.get("course_num")
     }
 
     if insert_data(query, data):

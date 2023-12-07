@@ -26,6 +26,8 @@ class SISScraper:
         )        
 
     def search_term(self, course): 
+        print(course)
+
         return " ".join(str(course[field]) for field in ["course_code", "course_num", "course_name"] if course[field] is not None)
 
     def check_courses(self, courses):
