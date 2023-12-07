@@ -38,15 +38,15 @@ class ExcelReader:
                 if key == "course_id" or key == "user_name":
                     continue
 
-                if key == "name":
-                    mask |= (course[key] in df[self.csv_headers[key]])
-                else:
+                if key != "name" or key != "professor":
                     mask |= (course[key] == df[self.csv_headers[key]])
 
         df = df[mask]
+        df = df[df["INSTR_NAME"].apply(lambda x: str(x).lower()) == course["professor"].lower()]
+        df = df[df["CW_CLASS_TITLE"].apply(lambda x: str(x).lower()) == course["course_name"].lower()]
 
         for _, row in df.iterrows():
             if "Open" in str(row["ENRL_STATUS"]):
-                return "Open"
+                return "OPEN"
 
-        return "Closed"
+        return "CLOSED"

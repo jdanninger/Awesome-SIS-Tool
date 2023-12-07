@@ -59,8 +59,6 @@ class SISScraper:
             search.send_keys(self.search_term(course))
             search.send_keys(Keys.RETURN)
             
-            self.driver.implicitly_wait(10)
-
             try:
                 element = self.driver.find_element(By.XPATH, f"//*[contains(text(), 'The search returns no results')]")
                 button = self.driver.find_element(By.ID, '#ICOK')
