@@ -122,7 +122,7 @@ import $ from 'jquery';
           $.ajax(settings).done(function (response) {
             console.log(response)
             if (response.message == "SUCCESS") {
-              window.location.href = "/tracking"
+              window.location.href = "/login"
             } else {
               alert("registration failed!")
             }

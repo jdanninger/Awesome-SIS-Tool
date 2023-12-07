@@ -34,6 +34,7 @@
 </style>
 
 <script>
+import { reactive } from 'vue';
 import $ from 'jquery';
   export default {
     data: () => ({
@@ -57,11 +58,14 @@ import $ from 'jquery';
           }),
         };
         let resp;
+        this.$globalState.myGlobalVariable = this.username
+        var name = this.username
+
         $.ajax(settings).done(function (response) {
           resp = resp
           console.log(response)
           if (response.message == "SUCCESS") {
-            window.location.href = "/tracking"
+            window.location.href = "/tracking/"+name
           } 
         });
 
