@@ -1,18 +1,13 @@
 
 # Case Course Watch
-This is a web app that notifies users when their classes become available on SIS. 
+The website will have the ability to notify CWRU students when previously full courses on SIS have open seats. By using our service, students will have an easier time getting into courses they want, leading to a less stressful course registration process.
 
 # Set Up 
 
-## Frontend Dev Setup
-
-``` 
-cd CCW-Frontend 
-npm install
-npm run dev
-```
+Please use terminal to run frontend and backend to open our application for proper usage.
 
 ## Backend Setup
+First, run our backend to have system set up. Please enter the following in terminal. 
 
 ```
 python3 -m venv .venv
@@ -20,42 +15,27 @@ source .venv/bin/activate
 pip3 install -r requirements.txt
 ```
 
-# Running Tests
 
-# Frontend Tests
+## Frontend Dev Setup
+Then, to open application on your local device on chrome, please enter the following to open and the application is ready to use!!
 
-Run frontend first, then run testcases
-cd CCW-Frontend
-npm run cypress:open
-
-Then choose Chrome browser and run all testcases.
-
-## Backend Tests
-
-To run a specific tests:
-
-```
-cd backend/tests
-python3 <test_name>.py
+``` 
+cd CCW-Frontend 
+npm install
+npm run dev
 ```
 
-To check code coverage for a specific test:
 
-```
-cd backend/tests
-coverage run -m unittest <test_name>.py
-```
+Application is ready to use. 
 
-You can view the code coverage results in two ways:
+## Application Instructions 
 
-1. Printed to the console
+Please use the sign up feature to register with our application. To access your account, use the login in feature. 
 
-```
-coverage report -m
-```
+Once logged in, click add class and once window with class form pops up, fill in class that you would like to be notified off. 
+Then, the class should be added to the table of tracked classes and you will have options to update that list. 
 
-2. As an HTML file (open the generated htmlcov/index.html in your browser)
+Once class spot open, the application will give you a notification that course has a spot ready to be enrolled in. 
 
-```
-coverage html
-```
+
+
